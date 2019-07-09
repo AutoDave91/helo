@@ -20,7 +20,7 @@ app.use(session({
     }
 }))
 massive(CONNECTION_STRING)
-.withConnection(db =>{
+.then(db =>{
     console.log('Database connection successful!')
     app.set('db', db)
 })
