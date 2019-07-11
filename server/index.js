@@ -27,7 +27,11 @@ massive(CONNECTION_STRING)
 .catch(()=>{console.log('Database connection failed...')})
 
 // -----------------ENDPOINTS---------------------
-
+// app.post('/auth/register')
+// app.post('/auth/login')
+// app.get('/api/posts/:userid')
+// app.post('/api/post/:userid')
+// app.get('/api/post/:postid')
 
 // DEFAULT
 app.listen(SERVER_PORT, ()=>{

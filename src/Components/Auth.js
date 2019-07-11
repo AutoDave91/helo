@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+
+import {handleUpdateUser} from '../reducks/reducer'
 
 class Auth extends Component{
     constructor(){
         super()
         this.state ={
             username: '',
-            password: '',
-            redirect: false
+            password: ''
         }
+    }
+
+    componentDidMount(){
+        Axios.get('/api/auth/session')
+            .then((user)=>{
+                this.props.handleUpdateUser(user.data)
+            })
+            .catch(console.log('failure at DidMount'))
     }
 
     handleChange(e){
@@ -22,11 +30,10 @@ class Auth extends Component{
             username: this.state.username,
             password: this.state.password
         }
-        this.props.getUserInfo(this.state.username)
-        axios
-            .post('/auth/login', {userPass})
+        this.props.handleUpdateUser(this.state.username)
+        Axios.post('/auth/login', {userPass})
             .then(response => { 
-                this.setState({username: '', password: '', redirect: true})
+                this.setState({username: '', password: ''})
                 this.props.history.push('/dashboard')
             })
             .catch(err => {
@@ -39,11 +46,10 @@ class Auth extends Component{
             username: this.state.username,
             password: this.state.password
         }
-        this.props.getUserInfo(this.state.username)
-        axios 
-            .post('/auth/register', {userPass})
+        this.props.handleUpdateUser(this.state.username)
+        Axios.post('/auth/register', {userPass})
             .then(user => {
-                this.setState({username: '', password: '', redirect: true})
+                this.setState({username: '', password: ''})
             })
             .catch(err => {
                 alert('Username Taken')
@@ -54,7 +60,7 @@ class Auth extends Component{
         return(
             <main id='auth'>
                 <section id='authContainer'>
-                    <img src={require('../../Images/logo.png')}/>
+                    <img src={require('../images/helo_logo.png')} alt='logo'/>
                     <h1>Helo?</h1>
                     <form id='authForm' onSubmit={(e) => this.handleLogin(e)}>
                         <section className='inputSection'>
@@ -76,7 +82,4 @@ class Auth extends Component{
     }
 }
 
-
-
-
-export default connect(null,{getUserInfo})(Auth)
+export default connect(null,{handleUpdateUser})(Auth)
