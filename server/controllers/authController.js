@@ -27,7 +27,7 @@ const register = async (req,res) => {
 const login = async (req,res) => {
     const db = req.app.get('db'),
     { username, password } = req.body.userPass;
-    console.log('AC30: ', req.body)
+    // console.log('AC30: ', req.body)
     console.log('AC31: ', req.body.userPass)
 
     const foundUser = await db.get_user([username]);
@@ -43,8 +43,8 @@ const login = async (req,res) => {
         return res.status(403).send('Incorrect password');
     }
 
-    req.session.user = { id: user.id, username: user.username, profile: user.profile_pic };
-        
+    req.session.user = { id: user.user_id, username: user.username, profile: user.profile_pic };
+    console.log('AC47: ', req.session.user)
     return res.send(req.session.user);
 }
 async function logout(req, res){
@@ -53,10 +53,11 @@ async function logout(req, res){
     return res.status(200).send(req.session);
 }
 async function getUser(req, res){
-    // console.log('AC:53 ->', req.session)
-    // console.log('AC55: ', req.session.customer)
-    if(req.session.customer){
-        res.json(req.session.customer)
+    console.log('AC56: ', req.session)
+    // console.log('AC55: ', req.session.user)
+    if(req.session.user){
+        console.log('AC60: hit')
+        res.json(req.session.user)
     } else {
         res.status(401).json(console.log('no user found'))
     }
