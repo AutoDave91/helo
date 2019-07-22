@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     };
     handleClick = e => {
-        Axios.get(`/api/post/${this.state.search}`).then(response => {
+        Axios.get(`/api/post?title=${this.state.search}`).then(response => {
             this.setState({posts: response.data})
         })
     }

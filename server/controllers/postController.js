@@ -15,7 +15,7 @@ const getMessages = async (req,res) => {
     res.status(200).send(messages)
 }
 searchMessages = async (req, res) => {
-    let {title} = req.params
+    let {title} = req.query
     console.log(req.params, req.body)
     const db = req.app.get('db')
     const results = await db.search_results(title)
