@@ -18,7 +18,10 @@ class Dashboard extends React.Component {
     }
     
     componentDidMount() {
-        this.getAllPosts();
+        Axios.get('/api/posts')
+            .then(res =>{
+                this.setState({posts: res.data})
+            })
         this.handleClick();
         this.props.getUser()
     }
@@ -26,37 +29,32 @@ class Dashboard extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     };
     handleClick = e => {
-        Axios.get(`/posts?title=${this.state.search}`).then(response => {
-            this.props.getSearch(response.data)
+        Axios.get(`/api/post/${this.state.search}`).then(response => {
             this.setState({posts: response.data})
         })
     }
-    getAllPosts = e => {
-        Axios.get("/posts").then(response => {
-            this.props.getPosts(response.data);
-        });
-    };
 
     render() {
         console.log(this.props)
         console.log(this.state)
-        let displayPosts = this.props.posts.map(post => {
-            return (
-                <main>
-                    <img top width="100%" src={post.image_url} alt={post.title} />
-                    <h1>{post.username}</h1>
-                    <h2>{post.title}</h2>
-                    <p>{post.context}</p>
-                </main>
-            );
-        });
         return (
             <main>
                 <h1>Dashboard</h1>
                 <p>Welcome {this.props.user}</p> <button onClick={this.props.Logout} >Logout</button>
                 <input name="search" placeholder="Search by title" onChange={this.handleChange}/>
                 <button onClick={this.handleClick} name="" >Search</button>
-                <div>{displayPosts}</div>
+                <section>
+                    {this.state.posts.map(post => {
+                        return (
+                            <section>
+                                <img top width="100%" src={post.image_url} alt={post.title} />
+                                <h1>{post.username}</h1>
+                                <h2>{post.title}</h2>
+                                <p>{post.context}</p>
+                            </section>
+                        );
+                    })}
+                </section>
             </main>
         );
     }

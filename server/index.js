@@ -36,7 +36,7 @@ app.get('/auth/user', AC.getUser)
 app.get('/api/posts', PC.getMessages)
 app.post('/api/post', PC.postMessage)
 // app.put('/api/post/:post_id', PC.editMessage)
-// app.get('/api/post/:title', PC.searchMessages)
+app.get('/api/post/:title', PC.searchMessages)
 
 // DEFAULT
 app.listen(SERVER_PORT, ()=>{

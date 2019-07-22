@@ -20,10 +20,10 @@ export const handleUpdateUser = (user) => {
         payload: user
     }
 }
-export function getPosts(posts) {
+export function getPosts() {
     return {
         type: GET_POSTS,
-        payload: posts
+        payload: axios.get("/api/posts")
     }
 }
 export function getSearch(posts) {
@@ -53,9 +53,11 @@ function reducer(state=initialState,action) {
         case HANDLE_UPDATE_USER:
             return { ...state, user: payload }
         case `${GET_USER}_FULLFILLED`:
-            return {...state, user: action.payload.data}
+            return {...state, user: payload.data}
+        case GET_POSTS:
+            return {...state, posts: payload.data}
         case `${LOGOUT}_FULLFILLED`:
-            return {...state, user: action.payload.data}
+            return {...state, user: payload.data}
         default: return state
     }
 }
