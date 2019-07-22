@@ -5,7 +5,8 @@ const massive = require('massive');
 require('dotenv').config();
 
 // controller imports
-
+const PC = require('./controllers/postController');
+const AC = require('./controllers/authController');
 
 // general server setup w/session and database
 const {SERVER_PORT, CONNECTION_STRING, SESSION_SECRET} = process.env
@@ -27,11 +28,15 @@ massive(CONNECTION_STRING)
 .catch(()=>{console.log('Database connection failed...')})
 
 // -----------------ENDPOINTS---------------------
-// app.post('/auth/register')
-// app.post('/auth/login')
-// app.get('/api/posts/:userid')
-// app.post('/api/post/:userid')
-// app.get('/api/post/:postid')
+app.post('/auth/register', AC.register)
+app.post('/auth/login', AC.login)
+app.get('/auth/logout', AC.logout)
+app.get('/auth/user', AC.getUser)
+
+app.get('/api/posts', PC.getMessages)
+app.post('/api/post', PC.postMessage)
+// app.put('/api/post/:post_id', PC.editMessage)
+// app.get('/api/post/:title', PC.searchMessages)
 
 // DEFAULT
 app.listen(SERVER_PORT, ()=>{

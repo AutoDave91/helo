@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 import {handleUpdateUser} from '../reducks/reducer'
 
@@ -9,7 +10,8 @@ class Auth extends Component{
         super()
         this.state ={
             username: '',
-            password: ''
+            password: '',
+            redirect: false
         }
     }
 
@@ -32,9 +34,10 @@ class Auth extends Component{
         }
         this.props.handleUpdateUser(this.state.username)
         Axios.post('/auth/login', {userPass})
-            .then(response => { 
-                this.setState({username: '', password: ''})
-                this.props.history.push('/dashboard')
+            .then(response => { console.log(response);
+                console.log('logged in')
+                this.setState({username: '', password: '', redirect: true})
+                // this.props.history.push('/dashboard')
             })
             .catch(err => {
                 alert('Bad Username or Password')
@@ -48,15 +51,21 @@ class Auth extends Component{
         }
         this.props.handleUpdateUser(this.state.username)
         Axios.post('/auth/register', {userPass})
-            .then(user => {
-                this.setState({username: '', password: ''})
-            })
-            .catch(err => {
-                alert('Username Taken')
-            })
+        .then(user => {
+            this.setState({username: '', password: ''})
+        })
+        .catch(err => {
+            alert('Username Taken')
+        })
+        console.log(userPass)
     }
 
     render(){
+        let {redirect} = this.state
+
+        {if(redirect === true){
+            return <Redirect to='/dashboard' />
+        }}
         return(
             <main id='auth'>
                 <section id='authContainer'>
